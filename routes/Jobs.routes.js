@@ -5,7 +5,7 @@ import { createJobPosting, getJobPostings, deleteJobPosting, updateJobPosting,ad
     updatePlacedStudent,
     getAllJobPostings, 
     getUpcomingJobPostings, 
-    getPastJobPostings } from '../controller/Jobs.controller.js';
+    getPastJobPostings,getApplications,addApplication} from '../controller/Jobs.controller.js';
     import {
         addExpenditure,
         updateExpenditure,
@@ -13,17 +13,17 @@ import { createJobPosting, getJobPostings, deleteJobPosting, updateJobPosting,ad
         getFilteredExpenditures
     } from '../controller/expenditureBook.controller.js';
 import { verifyAdminRole } from '../controller/Jobs.controller.js';
-import { verifyRole } from '../middleware/authMiddleware.js';
+import { verifyRole,authenticateUser } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // Route to create a new job posting (Admin only)
 // POST /api/job-postings
-router.post('/', verifyAdminRole, createJobPosting);
+router.post('/post', verifyAdminRole, createJobPosting);
 
 // Route to get all job postings
 // GET /api/job-postings
-router.get('/', getJobPostings);
+router.get('/get', getJobPostings);
 
 // Route to delete a job posting (Admin only)
 // DELETE /api/job-postings/:postId
@@ -52,5 +52,6 @@ router.put('/expenditure/:id', verifyRole(['SPC', 'Admin']), updateExpenditure);
 // Routes for Admin only
 router.get('/expenditure', verifyRole(['admin']), getAllExpenditures);
 router.get('/expenditure/filter', verifyRole(['admin']), getFilteredExpenditures);
-
+router.post('/addApplication', authenticateUser, addApplication);
+router.get('/getApplications', authenticateUser, getApplications);
 export default router;

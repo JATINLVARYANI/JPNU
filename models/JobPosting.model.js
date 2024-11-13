@@ -58,22 +58,41 @@ const jobPostingSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        set: function (value) {
+            // Ensure value is in DD/MM/YYYY format and convert to YYYY-MM-DD
+            const [day, month, year] = value.split('/'); // Assuming the input is in DD/MM/YYYY format
+            return new Date(`${year}-${month}-${day}`); // MongoDB expects the date in YYYY-MM-DD format
+        },
     },
     endDate: {
         type: Date,
-        required: true
+        
+        set: function (value) {
+            // Ensure value is in DD/MM/YYYY format and convert to YYYY-MM-DD
+            const [day, month, year] = value.split('/'); // Assuming the input is in DD/MM/YYYY format
+            return new Date(`${year}-${month}-${day}`); // MongoDB expects the date in YYYY-MM-DD format
+        },
     },
     otherDetails: {
         type: String
     },
     registrationOpenDate: {
         type: Date,
-        required: true
+        required: true,
+        set: function (value) {
+            // Ensure value is in DD/MM/YYYY format and convert to YYYY-MM-DD
+            const [day, month, year] = value.split('/'); // Assuming the input is in DD/MM/YYYY format
+            return new Date(`${year}-${month}-${day}`); // MongoDB expects the date in YYYY-MM-DD format
+        },
     },
     registrationCloseDate: {
         type: Date,
-        required: true
+        required: true,
+        set: function (value) {
+            // Ensure value is in DD/MM/YYYY format and convert to YYYY-MM-DD
+            const [day, month, year] = value.split('/'); // Assuming the input is in DD/MM/YYYY format
+            return new Date(`${year}-${month}-${day}`); // MongoDB expects the date in YYYY-MM-DD format
+        },
     },
     postDate: {
         type: Date,
@@ -100,5 +119,5 @@ const applicationSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-export default mongoose.model('JobPosting', jobPostingSchema);
+export const JobPosting = mongoose.model('JobPosting', jobPostingSchema);
 export const Application = mongoose.model('Application', applicationSchema);

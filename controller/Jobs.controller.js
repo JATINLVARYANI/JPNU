@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
-import JobPosting from '../models/JobPosting.model.js';
+// import Models from '../models/Application.model.js'
+import {JobPosting} from '../models/JobPosting.model.js';
 import PlacedStudents from '../models/Placed.model.js';
+import {Application} from '../models/JobPosting.model.js';
+import GeneralDetails from '../models/Profile.model.js';
  // Assuming you have the model separated
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,7 +21,7 @@ export const verifyAdminRole = (req, res, next) => {
         req.user = decoded;
 
         // Check if the user role is admin
-        if (req.user.role !== 'admin') {
+        if (req.user.role !== 'Admin') {
             return res.status(403).json({ message: "Access denied. You must be an admin to perform this action." });
         }
 
@@ -249,3 +252,51 @@ export const getPastJobPostings = async (req, res) => {
     }
 };
 
+export const addApplication = async (req, res) => {
+    try {
+        const { userId, postId } = req.body;
+
+        // Create a new application entry
+        const newApplication = new Application({ userId, postId });
+        await newApplication.save();
+
+        res.status(201).json({ message: 'Application added successfully', newApplication });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error adding application', error });
+    }
+};
+
+// API to fetch applications based on userId or postId
+export const getApplications = async (req, res) => {
+    try {
+        const { userId, postId } = req.query;
+
+        if (userId) {
+            // Find applications for this userId
+            const applications = await Application.find({ userId });
+
+            // Fetch JobPosting details for each postId in the applications
+            const jobDetails = await Promise.all(
+                applications.map(async (app) => {
+                    const jobPosting = await JobPosting.findOne({ postId: app.postId });
+                    return jobPosting;
+                })
+            );
+
+            // Retrieve additional details from GeneralDetails schema
+            const userDetails = await GeneralDetails.findOne({ userId });
+
+            res.json({ userDetails, jobDetails });
+        } else if (postId) {
+            // Fetch applications directly by postId
+            const applications = await Application.find({ postId });
+            res.json(applications);
+        } else {
+            res.status(400).json({ message: 'Please provide userId or postId as query parameters' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching applications', error });
+    }
+};
