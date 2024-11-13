@@ -9,9 +9,9 @@ import {
 } from "react-icons/fa";
 
 const pages = [
-  { name: "JobPost",  path: "/admin/" },
-  { name: "GetStudentList",  path: "/admin/studentlist" },
-  { name: "ExpenseList",  path: "/admin/expenselist" },
+  { name: "JobPost",  path: "/" },
+  { name: "GetStudentList",  path: "/studentlist" },
+  { name: "ExpenseList",  path: "/expenselist" },
 ];
 
 function AdminSidebar({onPageChange }) {

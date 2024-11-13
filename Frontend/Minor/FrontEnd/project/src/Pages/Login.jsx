@@ -21,6 +21,7 @@ const LoginPage = () => {
   // Navigate to another page (e.g., dashboard) if login was successful
   useEffect(() => {
     if (loginMessage === "Login successful") {
+      console.log(loggedInUser);
       navigate("/");  // Replace with your redirect path
     }
   }, [loginMessage, navigate]);

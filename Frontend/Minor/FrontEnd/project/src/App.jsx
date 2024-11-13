@@ -2,8 +2,10 @@ import "./App.css";
 import {
   Route,
   RouterProvider,
+  Routes,
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
 } from "react-router-dom";
 
 import Login from "./Pages/Login";
@@ -21,54 +23,65 @@ import AcademicDetailsForm from "./Components/WithinDashboard/Forums/Forms/Acade
 import GeneralDetailsForm from "./Components/WithinDashboard/Forums/Forms/GeneralDetailsForm";
 import ExperienceDetailFrom from "./Components/WithinDashboard/Forums/Forms/ExperienceDetailFrom";
 import ProjectDetialForm from "./Components/WithinDashboard/Forums/Forms/ProjectDetailForm";
-import GeneralDetailsForm1 from "./FormTesting/GeneralDetailsForm1";
 import AdminLayout from "./Components/AdminDashboard/Layout/AdminLayout";
 import JobPost from "./Components/AdminDashboard/JobPost/JobPost";
 import SPCLayout from "./Components/SPC/SPCLayout";
 import StudentList from "./Components/AdminDashboard/StudentList/StudentList";
 import ExpenseList from "./Components/AdminDashboard/ExpenseList/ExpenseList";
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="" element={<Dashboard />}>
-        <Route path="/" element={<Home />} />
-
-        <Route path="/d/jobs" element={<Jobs />}>
-          <Route path="" element={<Opportunites />} />
-          <Route path="applications" element={<Application />} />
-          <Route path="offers" element={<Offers />} />
-          <Route path=":id" element={<JD />} />
-          {/* this above one is job description */}
-        </Route>
-
-        <Route path="/d/resumes" element={<Resume />} />
-        <Route path="/d/editprofile" element={<Editprofile />}>
-          <Route path="" element={<GeneralDetailsForm />} />
-          {/* <Route path="*" element={<GeneralDetailsForm />} /> */}
-          <Route path="academic" element={<AcademicDetailsForm />} />
-          <Route path="experience" element={<ExperienceDetailFrom />} />
-          <Route path="projects" element={<ProjectDetialForm />} />
-        </Route>
-      </Route>
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="" element={<JobPost />} />
-        <Route path="studentlist" element={<StudentList />} />
-        <Route path="expenselist" element={<ExpenseList />} />
-      </Route>
-
-      <Route path="/spc" element={<SPCLayout />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-    </>
-  )
-);
+import { selectUser } from "./Pages/auth";
+import { useSelector } from "react-redux";
 
 function App() {
+  const user = useSelector(selectUser);
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        {!user ? (
+          // Redirect to login page if user is null
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        ) : user.role === "Admin" ? (
+          // Routes accessible to admin role
+          <Route path="/" element={<AdminLayout />}>
+            <Route path="" element={<JobPost />} />
+            <Route path="studentlist" element={<StudentList />} />
+            <Route path="expenselist" element={<ExpenseList />} />
+          </Route>
+        ) : user.role === "Student" ? (
+          // Routes accessible to student role
+          <Route path="" element={<Dashboard />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/d/jobs" element={<Jobs />}>
+              <Route path="" element={<Opportunites />} />
+              <Route path="applications" element={<Application />} />
+              <Route path="offers" element={<Offers />} />
+              <Route path=":id" element={<JD />} />
+            </Route>
+            <Route path="/d/resumes" element={<Resume />} />
+            <Route path="/d/editprofile" element={<Editprofile />}>
+              <Route path="" element={<GeneralDetailsForm />} />
+              <Route path="academic" element={<AcademicDetailsForm />} />
+              <Route path="experience" element={<ExperienceDetailFrom />} />
+              <Route path="projects" element={<ProjectDetialForm />} />
+            </Route>
+          </Route>
+        ) : user.role === "SPC" ? (
+          // Routes accessible to SPC role
+          <Route path="/spc" element={<SPCLayout />} />
+        ) : (
+          // Redirect to login if the role is not recognized
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        )}
+        {/* Common routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </>
+    )
+  );
+
   return (
     <>
       <RouterProvider router={router} />
-      {/* <GeneralDetailsForm1/> */}
     </>
   );
 }
