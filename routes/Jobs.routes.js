@@ -2,7 +2,10 @@ import express from "express";
 import { createJobPosting, getJobPostings, deleteJobPosting, updateJobPosting,addPlacedStudent,
     getPlacedStudents,
     deletePlacedStudent,
-    updatePlacedStudent } from '../controller/Jobs.controller.js';
+    updatePlacedStudent,
+    getAllJobPostings, 
+    getUpcomingJobPostings, 
+    getPastJobPostings } from '../controller/Jobs.controller.js';
     import {
         addExpenditure,
         updateExpenditure,
@@ -29,6 +32,14 @@ router.delete('/:postId', verifyAdminRole, deleteJobPosting);
 // Route to update a job posting (Admin only)
 // PUT /api/job-postings/:postId
 router.put('/:postId', verifyAdminRole, updateJobPosting);
+// Route to fetch all job postings
+router.get('/all', getAllJobPostings);
+
+// Route to fetch upcoming job postings (where endDate is in the future)
+router.get('/upcoming', getUpcomingJobPostings);
+
+// Route to fetch past job postings (where endDate has passed)
+router.get('/past', getPastJobPostings);
 
 router.post('/placed-students/add', addPlacedStudent);
 router.get('/placed-students', getPlacedStudents);

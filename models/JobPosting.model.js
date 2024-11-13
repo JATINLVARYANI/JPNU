@@ -6,72 +6,65 @@ const jobPostingSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    jobDriveName: {
+    title: {
         type: String,
         required: true
     },
     companyName: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company',
-        required: true
-    },
-    roles: [
-        {
-            type: String,
-            required: true
-        }
-    ],
-    employmentType: {
         type: String,
-        enum: ['internship', 'fulltime'],
         required: true
     },
-    ctc: [
-        {
-            role: String,
-            amount: Number
+    role: {
+        type: String,
+        required: true
+    },
+    internship: {
+        duration: {
+            type: String
+        },
+        stipend: {
+            type: Number
         }
-    ],
-    stipend: [
-        {
-            role: String,
-            amount: Number
+    },
+    fulltime: {
+        ctc: {
+            type: Number
         }
-    ],
-    eligibleCourses: [
-        {
-            role: String,
-            course: String
-        }
-    ],
-    requiredCgpa: [
-        {
-            role: String,
-            cgpa: Number
-        }
-    ],
-    requiredBacklogs: [
-        {
-            role: String,
-            backlogsAllowed: String
-        }
-    ],
-    location: [
+    },
+    locations: [
         {
             type: String,
             required: true
         }
     ],
-    jobDescription: {
-        type: String // Job description now stored as plain text
+    numberOfPositions: {
+        type: Number,
+        required: true
+    },
+    requiredSkills: [
+        {
+            type: String
+        }
+    ],
+    eligibleBranch: [
+        {
+            type: String
+        }
+    ],
+    backlogsAllowed: {
+        type: String,
+        enum: ['Yes', 'No'],
+        default: 'No'
+    },
+    startDate: {
+        type: Date,
+        required: true
+    },
+    endDate: {
+        type: Date,
+        required: true
     },
     otherDetails: {
-        type: String
-    },
-    otherBenefits: {
-        type: String
-    },
-    schedule: {
         type: String
     },
     registrationOpenDate: {
@@ -84,26 +77,28 @@ const jobPostingSchema = new mongoose.Schema({
     },
     postDate: {
         type: Date,
-        required: true
+        default: Date.now
     },
     status: {
         type: String,
         enum: ['active', 'inactive'],
         default: 'active'
-    },
-    numberOfPositions: {
-        type: Number
-    },
-    requiredSkills: [
-        {
-            type: String
-        }
-    ],
-    appliedStudents: [
-        {
-            type: String
-        }
-    ]
-});
+    }
+}, { timestamps: true });
 
+const applicationSchema = new mongoose.Schema({
+    userId: {
+        type: String, // UUID as a string
+        required: true
+    },
+    postId: {
+        type: String, // UUID as a string
+        required: true
+    },
+    appliedDate: {
+        type: Date,
+        default: Date.now
+    }
+});
 export default mongoose.model('JobPosting', jobPostingSchema);
+export const Application = mongoose.model('Application', applicationSchema);
