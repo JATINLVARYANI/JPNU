@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import JobPosting from '../models/JobPosting.model.js'; // Assuming you have the model separated
+import JobPosting from '../models/JobPosting.model.js';
+import PlacedStudents from '../models/Placed.model.js';
+ // Assuming you have the model separated
 import jwt from 'jsonwebtoken';
 
 
@@ -113,5 +115,75 @@ export const updateJobPosting = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error updating job posting", error });
+    }
+};
+
+// Controller to add a new placed student record
+export const addPlacedStudent = async (req, res) => {
+    try {
+        const { userID, companyPlacedAt, CTC } = req.body;
+
+        const newRecord = new PlacedStudents({ userID, companyPlacedAt, CTC });
+        await newRecord.save();
+
+        res.status(201).json({ message: "Record added successfully", newRecord });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error adding record", error });
+    }
+};
+
+// Controller to get all placed students
+export const getPlacedStudents = async (req, res) => {
+    try {
+        const placedStudents = await PlacedStudents.find({})
+            .populate('userID', 'name email') // Customize fields as needed
+            .exec();
+
+        if (!placedStudents || placedStudents.length === 0) {
+            return res.status(404).json({ message: "No records found" });
+        }
+
+        res.status(200).json(placedStudents);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error retrieving records", error });
+    }
+};
+
+// Controller to delete a placed student record
+export const deletePlacedStudent = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const record = await PlacedStudents.findById(id);
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        await record.remove();
+        res.status(200).json({ message: "Record deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error deleting record", error });
+    }
+};
+
+// Controller to update a placed student record
+export const updatePlacedStudent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        const record = await PlacedStudents.findById(id);
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        await PlacedStudents.updateOne({ _id: id }, updateData);
+        res.status(200).json({ message: "Record updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating record", error });
     }
 };

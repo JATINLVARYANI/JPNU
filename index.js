@@ -6,6 +6,7 @@ import connectDB from "./utils/db.js";
 import userRoutes from "./routes/user.routes.js";
 
 import academicRoutes from "./routes/academic.routes.js";
+import jobRoutes from "./routes/Jobs.routes.js"
 import cors from "cors";
 dotenv.config({});
 // import cors from "cors"
@@ -30,6 +31,7 @@ const port =  process.env.PORT || 3000;
 //api's
 app.use("/api/user",userRoutes);
 app.use("/api/academic",academicRoutes);
+app.use("/api/jobs",jobRoutes);
 // Test route
 app.get('/', (req, res) => {
     res.send('Server is running');
