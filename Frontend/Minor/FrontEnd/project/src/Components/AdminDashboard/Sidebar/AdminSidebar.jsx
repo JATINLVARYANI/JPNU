@@ -9,8 +9,9 @@ import {
 } from "react-icons/fa";
 
 const pages = [
-  { name: "JobPost", icon: FaBriefcase, path: "/admin/" },
-  { name: "GetStudentList", icon: FaFileAlt, path: "/admin/studentlist" },
+  { name: "JobPost",  path: "/admin/" },
+  { name: "GetStudentList",  path: "/admin/studentlist" },
+  { name: "ExpenseList",  path: "/admin/expenselist" },
 ];
 
 function AdminSidebar({onPageChange }) {
@@ -30,7 +31,6 @@ function AdminSidebar({onPageChange }) {
                 to={page.path}
                 className="flex items-center p-4 text-gray-700 hover:bg-gray-100"
               >
-                <page.icon />
                 {<span className="ml-4">{page.name}</span> }
               </Link>
             </li>

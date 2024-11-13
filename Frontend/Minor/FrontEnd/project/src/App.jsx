@@ -13,10 +13,6 @@ import Home from "./Components/WithinDashboard/Home/Home";
 import Jobs from "./Components/WithinDashboard/Jobs/Jobs";
 import Resume from "./Components/WithinDashboard/Reumes/Resume";
 import Editprofile from "./Components/WithinDashboard/Forums/EditProfile";
-// import AcademicDetailsForm from "./Components/WithinDashboard/editprofile/Forms/AcademicDetailsForm";
-// import GeneralDetailsForm from "./Components/WithinDashboard/editprofile/Forms/GeneralDetailsForm";
-// import ExperienceDetailFrom from "./Components/WithinDashboard/editprofile/Forms/ExperienceDetailFrom";
-// import ProjectDetialForm from "./Components/WithinDashboard/editprofile/Forms/ProjectDetailForm";
 import Opportunites from "./Components/WithinDashboard/Jobs/JobCategories/Opportunites";
 import Application from "./Components/WithinDashboard/Jobs/JobCategories/Application";
 import Offers from "./Components/WithinDashboard/Jobs/JobCategories/Offers";
@@ -28,6 +24,9 @@ import ProjectDetialForm from "./Components/WithinDashboard/Forums/Forms/Project
 import GeneralDetailsForm1 from "./FormTesting/GeneralDetailsForm1";
 import AdminLayout from "./Components/AdminDashboard/Layout/AdminLayout";
 import JobPost from "./Components/AdminDashboard/JobPost/JobPost";
+import SPCLayout from "./Components/SPC/SPCLayout";
+import StudentList from "./Components/AdminDashboard/StudentList/StudentList";
+import ExpenseList from "./Components/AdminDashboard/ExpenseList/ExpenseList";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,7 +53,11 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="" element={<JobPost />} />
+        <Route path="studentlist" element={<StudentList />} />
+        <Route path="expenselist" element={<ExpenseList />} />
       </Route>
+
+      <Route path="/spc" element={<SPCLayout />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
     </>

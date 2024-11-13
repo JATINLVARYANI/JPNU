@@ -1,64 +1,70 @@
 import React from "react";
-import { useNavigate, Routes, Route, useLocation, Outlet } from "react-router-dom";
+import {
+  useNavigate,
+  Routes,
+  Route,
+  useLocation,
+  Outlet,
+} from "react-router-dom";
 
-function JobCard({ job }) {
-  return (
-    <div className="bg-white shadow-lg p-4 rounded-lg flex items-center space-x-4 border">
-      <div className="flex-1">
-        <h3 className="text-lg font-semibold text-primary-dark">{job.jobRole}</h3>
-        <p className="text-gray-700">{job.companyName}</p>
-        <p className="text-gray-500">{job.location}</p>
-        <p className="text-primary-dark mt-1">CTC: {job.ctc}</p>
-      </div>
-    </div>
-  );
-}
 
 function Jobs() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const newJobsOpportunity = [
-    {
-      id: 1,
-      companyName: "Tech Innovators",
-      ctc: "₹12,00,000",
-      jobRole: "Full Stack Developer",
-      location: "Bangalore, India",
-    },
-    {
-      id: 2,
-      companyName: "Creative Solutions",
-      ctc: "₹8,00,000",
-      jobRole: "UI/UX Designer",
-      location: "Mumbai, India",
-    },
-    {
-      id: 3,
-      companyName: "Creative Solutions",
-      ctc: "₹8,00,000",
-      jobRole: "UI/UX Designer",
-      location: "Mumbai, India",
-    },
-  ];
-
   const userAppliedJobs = [
     {
-      id: 3,
-      companyName: "Green Energy Ltd.",
-      ctc: "₹10,00,000",
-      jobRole: "Project Manager",
-      location: "Delhi, India",
+      id: "4",
+      companyName: "Design Masters",
+      role: "UX/UI Designer",
+      internship: {
+        name: "internship",
+        duration: "5 months",
+        stipend: 18000,
+      },
+      fulltime: {
+        name: "fulltime",
+        ctc: 400000,
+      },
+      location: ["Mumbai", "Bangalore"],
+      NumberOfPositions: 1,
+      requiredSkills: ["Adobe XD", "Figma", "Sketch", "User Research"],
+      eligibleBranch: ["Design", "Computer Science"],
+      BacklogsAllowed: "No",
+      StartDate: "2024-05-01",
+      EndDate: "2024-06-01",
+      OtherDetails:
+        "Strong portfolio and understanding of design principles required.",
     },
   ];
 
   const offeredJobs = [
     {
-      id: 4,
-      companyName: "Data Analysts Inc.",
-      ctc: "₹9,00,000",
-      jobRole: "Data Scientist",
-      location: "Hyderabad, India",
+      id: "5",
+      companyName: "GreenTech Innovations",
+      role: "Environmental Engineer",
+      internship: {
+        name: "internship",
+        duration: "6 months",
+        stipend: 22000,
+      },
+      fulltime: {
+        name: "fulltime",
+        ctc: 350000,
+      },
+      location: ["Chennai", "Hyderabad"],
+      NumberOfPositions: 2,
+      requiredSkills: [
+        "Environmental Impact Assessment",
+        "Data Analysis",
+        "Sustainability",
+      ],
+      eligibleBranch: ["Environmental Engineering", "Civil Engineering"],
+      BacklogsAllowed: "Yes",
+      StartDate: "2024-06-01",
+      EndDate: "2024-07-01",
+      OtherDetails:
+        "Candidates should have an interest in sustainability and green technologies.",
     },
   ];
 
@@ -71,33 +77,46 @@ function Jobs() {
 
   return (
     <div className="p-8 min-h-screen">
-      <h1 className="text-2xl font-bold mb-8 text-primary-dark">Available Job Opportunities</h1>
+      <h1 className="text-2xl font-bold mb-8 text-primary-dark">
+        Available Job Opportunities
+      </h1>
       <div className="mb-8">
         <div className="flex space-x-2 overflow-scroll scrollbar-hide">
           <button
             onClick={() => navigate("/d/jobs/")}
-            className={`py-2 px-4 rounded-full ${getCurrentCategory() === "Opportunities" ? "bg-primary-dark text-white" : "bg-gray-200 text-primary-dark"}`}
+            className={`py-2 px-4 rounded-full ${
+              getCurrentCategory() === "Opportunities"
+                ? "bg-primary-dark text-white"
+                : "bg-gray-200 text-primary-dark"
+            }`}
           >
             Opportunities
           </button>
           <button
             onClick={() => navigate("/d/jobs/applications")}
-            className={`py-2 px-4 rounded-full ${getCurrentCategory() === "Applications" ? "bg-primary-dark text-white" : "bg-gray-200 text-primary-dark"}`}
+            className={`py-2 px-4 rounded-full ${
+              getCurrentCategory() === "Applications"
+                ? "bg-primary-dark text-white"
+                : "bg-gray-200 text-primary-dark"
+            }`}
           >
             Applications
           </button>
           <button
             onClick={() => navigate("/d/jobs/offers")}
-            className={`py-2 px-4 rounded-full ${getCurrentCategory() === "Offers" ? "bg-primary-dark text-white" : "bg-gray-200 text-primary-dark"}`}
+            className={`py-2 px-4 rounded-full ${
+              getCurrentCategory() === "Offers"
+                ? "bg-primary-dark text-white"
+                : "bg-gray-200 text-primary-dark"
+            }`}
           >
             Offers
           </button>
         </div>
       </div>
 
-      
       {/* Dynamic job display based on the route */}
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }
