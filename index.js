@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 // import cors from "cors";
 import connectDB from "./utils/db.js";
 import userRoutes from "./routes/user.routes.js";
-
+import notificationRoutes from "./routes/notification.routes.js";
 import academicRoutes from "./routes/academic.routes.js";
 import jobRoutes from "./routes/Jobs.routes.js"
 import cors from "cors";
@@ -32,6 +32,7 @@ const port =  process.env.PORT || 3000;
 app.use("/api/user",userRoutes);
 app.use("/api/academic",academicRoutes);
 app.use("/api/jobs",jobRoutes);
+app.use("/api/notification",notificationRoutes);
 // Test route
 app.get('/', (req, res) => {
     res.send('Server is running');
