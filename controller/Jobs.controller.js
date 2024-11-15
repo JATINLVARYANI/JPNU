@@ -98,23 +98,24 @@ export const createJobPosting = async (req, res) => {
 // Controller to get all job postings (No role restriction)
 export const getJobPostings = async (req, res) => {
     try {
-        // Fetch all job postings
+        // Fetch all job postings with complete data
         const jobPostings = await JobPosting.find({})
-            .populate('companyName') // Populates company details
+            .select('-__v') // Exclude the version field if not needed
             .exec();
 
-        // Check if there are any job postings
+        // Check if any job postings are found
         if (!jobPostings || jobPostings.length === 0) {
             return res.status(404).json({ message: "No job postings found" });
         }
 
         // Return the job postings
-        res.status(200).json(jobPostings);
+        res.status(200).json({ jobPostings });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error retrieving job postings", error });
     }
 };
+
 
 // Controller to delete a job posting (Admin only)
 export const deleteJobPosting = async (req, res) => {
